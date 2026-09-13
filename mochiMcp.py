@@ -50,6 +50,15 @@ def create_card(content: str,deckid:str,templateid:str, fields: dict[str, str]) 
         return r.json()
 
 @mcp.tool()
+def delete_card(cardid:str) -> dict:
+    """Apaga uma carta no mochi"""
+
+    with mochi() as c:
+        r = c.delete("/cards/", json={"card-id":cardid})
+        r.raise_for_status
+        return r.json()
+
+@mcp.tool()
 def list_cards(deckid:str | None = None) -> list[dict]:
     """Lista as cartas e pode listar as cartas de um deck especifico no mochi"""
     params = {}
