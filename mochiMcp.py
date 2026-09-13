@@ -50,13 +50,13 @@ def create_card(content: str,deckid:str,templateid:str, fields: dict[str, str]) 
         return r.json()
 
 @mcp.tool()
-def delete_card(cardid:str) -> dict:
+def delete_card(cardid:str) -> str:
     """Apaga uma carta no mochi"""
 
     with mochi() as c:
-        r = c.delete("/cards/", json={"card-id":cardid})
-        r.raise_for_status
-        return r.json()
+        r = c.delete(f"/cards/{cardid}")
+        r.raise_for_status()
+        return f"carta {cardid} foi deletada com sucesso"
 
 @mcp.tool()
 def list_cards(deckid:str | None = None) -> list[dict]:
