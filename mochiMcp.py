@@ -77,13 +77,13 @@ def list_cards(deckid:str | None = None) -> list[dict]:
             r = c.get("/cards/",params=params)
             r.raise_for_status()
             data = r.json()
-            
+
             cards_page = data.get("docs",[])
             all_cards.extend(cards_page)
 
             bookmark = data.get("bookmark")
 
-            if not bookmark:
+            if params.get("bookmark") == data.get("bookmark"):
                 break
 
         return all_cards
