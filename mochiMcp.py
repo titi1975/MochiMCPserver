@@ -61,13 +61,33 @@ def delete_card(cardid:str) -> str:
 @mcp.tool()
 def list_cards(deckid:str | None = None) -> list[dict]:
     """Lista as cartas e pode listar as cartas de um deck especifico no mochi"""
+
+    all_cards = []
     params = {}
+    bookmark = None
+
     if deckid:
         params["deck-id"] = deckid
+
     with mochi() as c:
+        while True:
+
+            if bookmark:
+                    params["bookmark"] = bookmark
             r = c.get("/cards/",params=params)
             r.raise_for_status()
-            return r.json()["docs"]
+            data = r.json()
+            
+            cards_page = data.get("docs",[])
+            all_cards.extend(cards_page)
+
+            bookmark = data.get("bookmark")
+
+            if not bookmark:
+                break
+
+        return all_cards
+                
 # POST https://app.mochi.cards/api/cards/
 
 #templates
