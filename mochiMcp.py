@@ -33,7 +33,8 @@ def create_deck(name:str,parentid:str | None = None) -> dict:
         r = c.post("/decks/", json=payload)
         r.raise_for_status()
         return r.json()
-
+    
+@mcp.tool()
 def delete_deck(deckid:str) -> str:
     """apaga um deck do mochi"""
 
