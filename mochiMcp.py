@@ -33,6 +33,15 @@ def create_deck(name:str,parentid:str | None = None) -> dict:
         r = c.post("/decks/", json=payload)
         r.raise_for_status()
         return r.json()
+
+def delete_deck(deckid:str) -> str:
+    """apaga um deck do mochi"""
+
+    with mochi() as c:
+        r = c.delete(f"/decks/{deckid}")
+        r.raise_for_status()
+        return f"deck {deckid} foi deletada com sucesso"
+        
 #cards
 @mcp.tool()
 def create_card(content: str,deckid:str,templateid:str, fields: dict[str, str]) -> dict:
